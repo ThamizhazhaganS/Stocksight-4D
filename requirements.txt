@@ -4,4 +4,7 @@ numpy
 scikit-learn
 matplotlib
 joblib
-streamlit
+streamlit==1.32.2
+streamlit-lottie==0.0.5
+altair<5.0.0
+torch
