@@ -285,20 +285,25 @@ with tab3:
     st.write("### 📁 Generated Forecast Gallery")
     st.write("View and manage your generated 4D visualizations.")
     
-    # Scan for PNG files
-    files = [f for f in os.listdir('.') if f.startswith('forecast_') and f.endswith('.png')]
+    # Scan for PNG files, ensure they are actual files and not empty
+    files = [f for f in os.listdir('.') if f.startswith('forecast_') and f.endswith('.png') and os.path.isfile(f) and os.path.getsize(f) > 0]
+    
     # Sort by modification time (newest first)
     files.sort(key=lambda x: os.path.getmtime(x), reverse=True) 
     
     if not files:
-        st.info("No forecast images generated yet.")
+        st.info("No valid forecast images generated yet. Run an analysis to generate one!")
     else:
         # Display in a list layout for better management
         for idx, file in enumerate(files):
             with st.container():
                 cols = st.columns([1, 4, 1])
                 with cols[0]:
-                    st.image(file, use_container_width=True)
+                    try:
+                        st.image(file, use_container_width=True)
+                    except Exception as e:
+                        st.error("Image corrupted.")
+                        continue
                 with cols[1]:
                     st.write(f"**{file}**")
                     try:
@@ -308,8 +313,11 @@ with tab3:
                         pass
                 with cols[2]:
                     # Download
-                    with open(file, "rb") as f:
-                        st.download_button("⬇️", data=f, file_name=file, mime="image/png", key=f"dl_{idx}")
+                    try:
+                        with open(file, "rb") as f:
+                            st.download_button("⬇️", data=f, file_name=file, mime="image/png", key=f"dl_{idx}")
+                    except:
+                        pass
                     
                     # Delete
                     if st.button("🗑️", key=f"del_{idx}"):
