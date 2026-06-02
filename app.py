@@ -266,7 +266,8 @@ with tab2:
                 start_loc = max(0, loc - 15)
                 seq_df = processed_data.iloc[start_loc : loc + 1][model.feature_cols]
                 
-                probs = model.predict_probabilities(seq_df)
+                probs, _ = model.predict_probabilities(seq_df)
+                
                 
                 c1, c2 = st.columns([2, 1])
                 with c1:

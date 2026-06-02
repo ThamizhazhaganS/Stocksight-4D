@@ -69,7 +69,7 @@ def run_benchmark(ticker="SOL-USD"):
             seq_data = full_df.iloc[seq_start : current_idx + 1][feature_cols]
             
             # Predict
-            probs_dict = lstm_engine.predict_probabilities(seq_data)
+            probs_dict, _ = lstm_engine.predict_probabilities(seq_data)
             
             # Convert probabilities back to class label
             # Mapping: 'y (↑)': 1, 'x (→)': 0, "x' (←)": 3, "y' (↓)": 2
