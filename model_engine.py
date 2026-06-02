@@ -99,17 +99,11 @@ class ModelEngine:
         daily_drift = pred_return_7d / days
         daily_vol = volatility 
         
-        # Simulation
-        paths = np.zeros((simulations, days))
+        # Vectorized Simulation for extreme performance
+        shocks = np.random.normal(loc=daily_drift, scale=daily_vol, size=(simulations, days))
+        returns = 1 + shocks
+        paths = current_price * np.cumprod(returns, axis=1)
         
-        for i in range(simulations):
-            price = current_price
-            for d in range(days):
-                shock = np.random.normal()
-                ret = daily_drift + daily_vol * shock
-                price *= (1 + ret)
-                paths[i, d] = price
-            
         final_returns = (paths[:, -1] - current_price) / current_price
         
         # Classification Logic
