@@ -177,7 +177,10 @@ with tab1:
                 st.bar_chart(sorted_imp, color="#00ff88", height=150)
 
         # 3. AI Process Visual & Final Convergence
-        st.image("process_animation.gif", use_container_width=True, caption="Backend Neural Optimizer & Monte Carlo Convergence Loop")
+        if os.path.exists("process_animation.gif"):
+            st.image("process_animation.gif", use_container_width=True, caption="Backend Neural Optimizer & Monte Carlo Convergence Loop")
+        else:
+            st.info("🔄 Monte Carlo Convergence animation not available in this environment.")
         st.success("✅ SYSTEM READY: HYBRID MODEL CONVERGED")
         
         # --- Monte Carlo Visualizer (Keep this below animation) ---
